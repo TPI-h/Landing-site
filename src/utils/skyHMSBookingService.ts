@@ -15,13 +15,11 @@ export interface BookingResponse {
     bookingUrl?: string;
 }
 
-// Configuration - You'll need to get these from SKYHMS
+// Configuration - Gets credentials from environment variables
 const SKYHMS_CONFIG = {
     baseUrl: 'https://bookings.skyrooms.in/bookapi',
-    propid: '111',
-    apikey: '1111111',
-    // Set to true for testing/demo mode (will simulate successful booking)
-    testMode: true
+    propid: import.meta.env.VITE_SKYHMS_PROP_ID || '111',
+    apikey: import.meta.env.VITE_SKYHMS_API_KEY || '1111111'
 };
 
 export class SKYHMSBookingService {
@@ -37,22 +35,6 @@ export class SKYHMSBookingService {
         try {
             console.log('Sending booking request to SKYHMS:', bookingData);
 
-            // Test mode for development/demo - check this FIRST
-            if (SKYHMS_CONFIG.testMode) {
-                console.log('🧪 Running in test mode - simulating successful booking');
-                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-
-                return {
-                    success: true,
-                    data: {
-                        bookingId: 'TEST_' + Date.now(),
-                        status: 'confirmed',
-                        message: 'Booking confirmed in TEST MODE! In production, this would redirect to the actual booking confirmation page.'
-                    }
-                    // No bookingUrl in test mode to avoid 404 errors
-                };
-            }
-
             const payload: BookingRequest = {
                 propid: SKYHMS_CONFIG.propid,
                 fromdate: bookingData.fromdate,
@@ -63,13 +45,17 @@ export class SKYHMSBookingService {
 
             console.log('SKYHMS API payload:', payload);
 
+            // Try using URLSearchParams to avoid CORS issues with JSON
+            const formData = new URLSearchParams();
+            formData.append('propid', payload.propid);
+            formData.append('fromdate', payload.fromdate);
+            formData.append('todate', payload.todate);
+            formData.append('noofrooms', payload.noofrooms.toString());
+            formData.append('apikey', payload.apikey);
+
             const response = await fetch(SKYHMS_CONFIG.baseUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
+                body: formData
             });
 
             console.log('SKYHMS API response status:', response.status);
