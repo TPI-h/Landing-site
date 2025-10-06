@@ -129,6 +129,21 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
+    overflow-x: hidden;
+    /* Prevent horizontal scrolling */
+  }
+
+  /* Mobile-specific fixes */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+      /* Slightly smaller base font on mobile */
+    }
+
+    body {
+      -webkit-text-size-adjust: 100%;
+      /* Prevent text scaling on iOS */
+    }
   }
 
   h1,
@@ -246,5 +261,142 @@ All colors MUST be HSL.
   /* 3D perspective for card stacking */
   .perspective-1000 {
     perspective: 1000px;
+  }
+
+  /* Mobile-specific utilities */
+  @media (max-width: 640px) {
+    .mobile-safe-area {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    .mobile-text-balance {
+      text-wrap: balance;
+    }
+
+    .mobile-scroll-smooth {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Mobile-optimized animations */
+    .mobile-slide-up {
+      animation: mobileSlideUp 0.6s ease-out forwards;
+    }
+
+    .mobile-fade-in {
+      animation: mobileFadeIn 0.8s ease-out forwards;
+    }
+
+    .mobile-scale-in {
+      animation: mobileScaleIn 0.5s ease-out forwards;
+    }
+
+    /* Mobile button enhancements */
+    .mobile-button-enhance {
+      min-height: 44px;
+      /* iOS recommended touch target */
+      min-width: 44px;
+      padding: 12px 24px;
+      font-size: 16px;
+      /* Prevent zoom on iOS */
+      border-radius: 12px;
+      transition: all 0.2s ease-out;
+    }
+
+    .mobile-button-enhance:active {
+      transform: scale(0.98);
+      opacity: 0.8;
+    }
+
+    /* Mobile card improvements */
+    .mobile-card-spacing {
+      margin: 8px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* Mobile text improvements */
+    .mobile-heading {
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .mobile-body-text {
+      line-height: 1.6;
+      font-size: 16px;
+    }
+  }
+
+  /* Mobile animations */
+  @keyframes mobileSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mobileFadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes mobileScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Prevent layout shift on mobile */
+  .mobile-viewport-fix {
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Dynamic viewport height for better mobile support */
+  }
+
+  /* Mobile-first responsive grid */
+  @media (max-width: 640px) {
+    .mobile-grid-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .mobile-padding {
+      padding: 16px;
+    }
+
+    .mobile-margin {
+      margin: 16px;
+    }
+
+    /* Mobile menu specific styles */
+    .mobile-menu-button {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu-dropdown {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
   }
 }

@@ -100,21 +100,21 @@ const TestimonialsSection = ({ testimonials, testimonialsLoading }: Testimonials
   });
 
   return (
-    <section className="py-16 bg-gradient-section">
+    <section className="py-12 sm:py-16 bg-gradient-section">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-navy mb-6">Guest Reviews</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 sm:mb-6 px-4">Guest Reviews</h2>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
             What our guests say about their experience
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {testimonialsLoading ? (
             <div className="col-span-3 text-center py-8">Loading testimonials...</div>
           ) : (
             (testimonials ?? []).slice(0, 3).map((testimonial) => (
-              <Card key={testimonial.id} className="p-6 shadow-card hover:shadow-hover transition-all duration-300 relative">
+              <Card key={testimonial.id} className="p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 relative bg-gradient-to-br from-white via-cream/10 to-white transform hover:-translate-y-1 hover:scale-[1.02]">
                 {/* Image positioned in middle-right */}
                 {(() => {
                   const imageUrl = getDirectImageUrl(testimonial.image_url || '');

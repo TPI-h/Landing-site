@@ -57,22 +57,22 @@ const AboutSection = ({ hotel }: AboutSectionProps) => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={viewportOptions}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-navy mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 sm:mb-6 px-4">
               About {hotel?.name || "Thendral Park Inn"}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4 leading-relaxed">
               {hotel?.description ||
                 "A comfortable hotel experience in the heart of Bangalore, Karnataka"}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -86,16 +86,17 @@ const AboutSection = ({ hotel }: AboutSectionProps) => {
                   }
                 }
               }}
+              className="px-4 sm:px-0"
             >
               <motion.h3
-                className="text-2xl font-bold text-navy mb-6"
+                className="text-xl sm:text-2xl font-bold text-navy mb-4 sm:mb-6"
                 variants={fadeInUp}
               >
                 Our Heritage
               </motion.h3>
 
               <motion.p
-                className="text-muted-foreground mb-6 leading-relaxed"
+                className="text-muted-foreground mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
                 variants={fadeInUp}
               >
                 For nearly three decades, we have been dedicated to providing
@@ -104,7 +105,7 @@ const AboutSection = ({ hotel }: AboutSectionProps) => {
               </motion.p>
 
               <motion.p
-                className="text-muted-foreground mb-8 leading-relaxed"
+                className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base"
                 variants={fadeInUp}
               >
                 Located in Bangalore, we serve as your perfect base
@@ -112,18 +113,18 @@ const AboutSection = ({ hotel }: AboutSectionProps) => {
               </motion.p>
 
               <motion.div
-                className="grid grid-cols-2 gap-6"
+                className="grid grid-cols-2 gap-3 sm:gap-6"
                 variants={fadeInUp}
               >
                 <motion.div
-                  className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-gold/20"
+                  className="text-center p-3 sm:p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-gold/20"
                   whileHover={{ y: -5 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  <div className="text-3xl font-bold text-gold mb-1">
+                  <div className="text-2xl sm:text-3xl font-bold text-gold mb-1">
                     29+
                   </div>
-                  <div className="text-sm text-muted-foreground font-medium">
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">
                     Years of Service
                   </div>
                 </motion.div>
