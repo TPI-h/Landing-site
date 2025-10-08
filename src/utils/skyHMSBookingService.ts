@@ -25,10 +25,56 @@ const SKYHMS_CONFIG = {
 export class SKYHMSBookingService {
 
     /**
-     * Send booking request to SKYHMS API
-     * 
-     * The API should return a booking URL for redirect to complete the booking process.
-     * Domain thendralparkinn.com is whitelisted with SKYHMS.
+     * Create booking by submitting form directly (no CORS issues)
+     * This mimics the working example's approach exactly
+     */
+    static submitBookingForm(bookingData: {
+        fromdate: string;
+        todate: string;
+        noofrooms: number;
+    }): void {
+        console.log('Submitting booking form to SKYHMS:', bookingData);
+
+        // Create payload in the exact order specified by SKYHMS API documentation
+        const payload: BookingRequest = {
+            propid: SKYHMS_CONFIG.propid,
+            fromdate: bookingData.fromdate,
+            todate: bookingData.todate,
+            noofrooms: bookingData.noofrooms,
+            apikey: SKYHMS_CONFIG.apikey
+        };
+
+        console.log('SKYHMS API payload:', payload);
+
+        // Create a hidden form dynamically and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = SKYHMS_CONFIG.baseUrl;
+        form.target = '_blank'; // Open in new tab
+        form.style.display = 'none';
+
+        // Add the apikey field with JSON payload
+        const apikeyField = document.createElement('input');
+        apikeyField.type = 'hidden';
+        apikeyField.name = 'apikey';
+        apikeyField.value = JSON.stringify(payload);
+
+        form.appendChild(apikeyField);
+        document.body.appendChild(form);
+
+        console.log('Submitting form with payload:', JSON.stringify(payload));
+
+        // Submit the form
+        form.submit();
+
+        // Clean up - remove form after submission
+        setTimeout(() => {
+            document.body.removeChild(form);
+        }, 1000);
+    }
+
+    /**
+     * Main booking method - uses form submission to avoid CORS issues
      */
     static async createBooking(bookingData: {
         fromdate: string;
@@ -36,124 +82,21 @@ export class SKYHMSBookingService {
         noofrooms: number;
     }): Promise<BookingResponse> {
         try {
-            console.log('Sending booking request to SKYHMS:', bookingData);
+            // Use form submission instead of fetch to avoid CORS issues
+            this.submitBookingForm(bookingData);
 
-            // Create payload in the exact order specified by SKYHMS API documentation
-            const payload: BookingRequest = {
-                propid: SKYHMS_CONFIG.propid,
-                fromdate: bookingData.fromdate,
-                todate: bookingData.todate,
-                noofrooms: bookingData.noofrooms,
-                apikey: SKYHMS_CONFIG.apikey
-            };
-
-            console.log('SKYHMS API payload:', payload);
-
-            const formData = new URLSearchParams();
-            formData.append('apikey', JSON.stringify(payload));
-
-            console.log('Form data being sent:', formData.toString());
-
-            const response = await fetch(SKYHMS_CONFIG.baseUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formData
-            });
-
-            console.log('SKYHMS API response status:', response.status);
-
-            if (!response.ok) {
-                throw new Error(`SKYHMS API error: ${response.status} ${response.statusText}`);
-            }
-
-            // Handle both JSON and text responses
-            let responseData;
-            const contentType = response.headers.get('content-type');
-
-            if (contentType && contentType.includes('application/json')) {
-                responseData = await response.json();
-            } else {
-                responseData = await response.text();
-            }
-
-            console.log('SKYHMS API response data:', responseData);
-
-            // If response is HTML or contains redirect URL, extract it
-            if (typeof responseData === 'string') {
-                // Check if it's an HTML response with a redirect
-                if (responseData.includes('<script>') && responseData.includes('window.location')) {
-                    const urlMatch = responseData.match(/window\.location\s*=\s*["']([^"']+)["']/);
-                    if (urlMatch) {
-                        return {
-                            success: true,
-                            data: responseData,
-                            bookingUrl: urlMatch[1]
-                        };
-                    }
-                }
-
-                // Check for direct URL in response
-                const urlMatch = responseData.match(/https?:\/\/[^\s<>"]+/);
-                if (urlMatch) {
-                    return {
-                        success: true,
-                        data: responseData,
-                        bookingUrl: urlMatch[0]
-                    };
-                }
-
-                // If response contains "Incorrect Domain", it means domain issue
-                if (responseData.includes('Incorrect Domain')) {
-                    return {
-                        success: false,
-                        error: 'Domain not whitelisted with SKYHMS. Please contact support.',
-                        data: responseData
-                    };
-                }
-            }
-
-            // Handle JSON response
-            if (responseData && typeof responseData === 'object') {
-                const bookingUrl = responseData.bookingUrl || responseData.url || responseData.redirectUrl || responseData.redirect_url;
-                if (bookingUrl) {
-                    return {
-                        success: true,
-                        data: responseData,
-                        bookingUrl: bookingUrl
-                    };
-                }
-            }
-
-            // If we reach here, return success but no URL found
             return {
                 success: true,
-                data: responseData,
-                bookingUrl: null
+                data: 'Booking form submitted successfully. Opening SKYHMS booking page in new tab.',
+                bookingUrl: 'Opening in new tab...'
             };
 
         } catch (error) {
             console.error('SKYHMS booking error:', error);
 
-            // More detailed error handling
-            let errorMessage = 'Failed to process booking request';
-
-            if (error instanceof TypeError && error.message.includes('fetch')) {
-                errorMessage = 'Network error: Unable to connect to booking service. Please check your internet connection.';
-            } else if (error instanceof Error) {
-                if (error.message.includes('CORS')) {
-                    errorMessage = 'CORS error: Unable to access booking service from this domain.';
-                } else if (error.message.includes('Failed to fetch')) {
-                    errorMessage = 'Network error: Unable to reach booking service. This might be due to CORS policy or network issues.';
-                } else {
-                    errorMessage = error.message;
-                }
-            }
-
             return {
                 success: false,
-                error: errorMessage
+                error: error instanceof Error ? error.message : 'Failed to process booking request'
             };
         }
     }
