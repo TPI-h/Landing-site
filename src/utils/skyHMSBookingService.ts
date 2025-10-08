@@ -1,11 +1,11 @@
 // SKYHMS Booking Engine Integration Service
 
 export interface BookingRequest {
-    propid: string;
-    fromdate: string; // Format: YYYY-MM-DD
-    todate: string;   // Format: YYYY-MM-DD
-    noofrooms: number;
-    apikey: string;
+    propid: number;     // Property ID provided by SKYHMS (Integer)
+    fromdate: string;   // Format: YYYY-MM-DD (check-in date)
+    todate: string;     // Format: YYYY-MM-DD (check-out date)  
+    noofrooms: number;  // Number of rooms to book
+    apikey: string;     // API key provided by SKYHMS
 }
 
 export interface BookingResponse {
@@ -18,7 +18,7 @@ export interface BookingResponse {
 // Configuration - Gets credentials from environment variables
 const SKYHMS_CONFIG = {
     baseUrl: 'https://bookings.skyrooms.in/bookapi',
-    propid: import.meta.env.VITE_SKYHMS_PROP_ID || '111',
+    propid: parseInt(import.meta.env.VITE_SKYHMS_PROP_ID || '111'),
     apikey: import.meta.env.VITE_SKYHMS_API_KEY || '1111111'
 };
 
@@ -38,6 +38,7 @@ export class SKYHMSBookingService {
         try {
             console.log('Sending booking request to SKYHMS:', bookingData);
 
+            // Create payload in the exact order specified by SKYHMS API documentation
             const payload: BookingRequest = {
                 propid: SKYHMS_CONFIG.propid,
                 fromdate: bookingData.fromdate,
@@ -48,16 +49,16 @@ export class SKYHMSBookingService {
 
             console.log('SKYHMS API payload:', payload);
 
-            // Try using URLSearchParams to avoid CORS issues with JSON
             const formData = new URLSearchParams();
-            formData.append('propid', payload.propid);
-            formData.append('fromdate', payload.fromdate);
-            formData.append('todate', payload.todate);
-            formData.append('noofrooms', payload.noofrooms.toString());
-            formData.append('apikey', payload.apikey);
+            formData.append('apikey', JSON.stringify(payload));
+
+            console.log('Form data being sent:', formData.toString());
 
             const response = await fetch(SKYHMS_CONFIG.baseUrl, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
                 body: formData
             });
 
@@ -70,13 +71,13 @@ export class SKYHMSBookingService {
             // Handle both JSON and text responses
             let responseData;
             const contentType = response.headers.get('content-type');
-            
+
             if (contentType && contentType.includes('application/json')) {
                 responseData = await response.json();
             } else {
                 responseData = await response.text();
             }
-            
+
             console.log('SKYHMS API response data:', responseData);
 
             // If response is HTML or contains redirect URL, extract it
@@ -92,7 +93,7 @@ export class SKYHMSBookingService {
                         };
                     }
                 }
-                
+
                 // Check for direct URL in response
                 const urlMatch = responseData.match(/https?:\/\/[^\s<>"]+/);
                 if (urlMatch) {
@@ -102,7 +103,7 @@ export class SKYHMSBookingService {
                         bookingUrl: urlMatch[0]
                     };
                 }
-                
+
                 // If response contains "Incorrect Domain", it means domain issue
                 if (responseData.includes('Incorrect Domain')) {
                     return {

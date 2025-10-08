@@ -71,18 +71,18 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
                 // If there's a booking URL, redirect immediately
                 if (response.bookingUrl) {
                     console.log('Redirecting to booking URL:', response.bookingUrl);
-                    
+
                     // Close modal first
                     setIsOpen(false);
-                    
+
                     // Show brief loading message
                     toast.loading('Redirecting to booking page...', { duration: 1000 });
-                    
+
                     // Redirect to the booking page
                     setTimeout(() => {
                         window.location.href = response.bookingUrl;
                     }, 500);
-                    
+
                 } else {
                     // If no URL is returned, there might be an issue
                     toast.error('Booking URL not received. Please contact hotel directly.');
