@@ -68,19 +68,25 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
             });
 
             if (response.success) {
-                toast.success('Booking request sent successfully!');
-
-                // If there's a booking URL, open it
+                // If there's a booking URL, redirect immediately
                 if (response.bookingUrl) {
-                    console.log('Opening booking URL:', response.bookingUrl);
-                    window.open(response.bookingUrl, '_blank');
-                    toast.success(`Redirecting to booking confirmation...`);
+                    console.log('Redirecting to booking URL:', response.bookingUrl);
+                    
+                    // Close modal first
+                    setIsOpen(false);
+                    
+                    // Show brief loading message
+                    toast.loading('Redirecting to booking page...', { duration: 1000 });
+                    
+                    // Redirect to the booking page
+                    setTimeout(() => {
+                        window.location.href = response.bookingUrl;
+                    }, 500);
+                    
                 } else {
-                    // If no URL, show success message with details
-                    toast.success(`Booking confirmed for ${nights} night(s), ${roomCount} room(s)`);
+                    // If no URL is returned, there might be an issue
+                    toast.error('Booking URL not received. Please contact hotel directly.');
                 }
-
-                setIsOpen(false);
 
                 // Reset form
                 setFormData({
