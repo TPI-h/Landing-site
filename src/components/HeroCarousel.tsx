@@ -89,7 +89,7 @@ const HeroCarousel = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100 z-20" : "opacity-0 z-10"
             }`}
         >
           <img
@@ -98,29 +98,34 @@ const HeroCarousel = () => {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40 sm:bg-gradient-overlay" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white max-w-4xl px-6 sm:px-8 mx-4">
-              <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-6 opacity-0 animate-fade-in-up leading-tight drop-shadow-lg">
-                {slide.title}
-              </h1>
-              <p className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 opacity-0 animate-fade-in-up animation-delay-300 leading-relaxed max-w-2xl mx-auto drop-shadow-md">
-                {slide.subtitle}
-              </p>
-              <div className="opacity-0 animate-fade-in-up animation-delay-600">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-gold via-amber-500 to-gold hover:from-amber-600 hover:via-gold hover:to-amber-600 text-white font-semibold px-8 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg min-w-[160px]"
-                  onClick={() => navigate('/book-now')}
-                >
-                  Book Now
-                </Button>
-                {/* <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-navy px-8"
-                >
-                  Explore Rooms
-                </Button> */}
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+            <div className="text-center text-white max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
+              <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4 sm:space-y-6 lg:space-y-8">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold opacity-0 animate-fade-in-up leading-tight drop-shadow-lg">
+                  {slide.title}
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-0 animate-fade-in-up animation-delay-300 leading-relaxed max-w-3xl drop-shadow-md">
+                  {slide.subtitle}
+                </p>
+                <div className="opacity-0 animate-fade-in-up animation-delay-600 pt-2 sm:pt-4">
+                  <Button
+                    size="lg"
+                    className="relative z-50 bg-gradient-to-r from-gold via-amber-500 to-gold hover:from-amber-600 hover:via-gold hover:to-amber-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-base sm:text-lg font-bold min-w-[140px] sm:min-w-[160px] pointer-events-auto"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('Book Now button clicked - navigating to /book-now');
+                      try {
+                        navigate('/book-now');
+                      } catch (error) {
+                        console.error('Navigate failed, using window.location:', error);
+                        window.location.href = '/book-now';
+                      }
+                    }}
+                  >
+                    Book Now
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -130,19 +135,19 @@ const HeroCarousel = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold transition-colors z-10"
+        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold transition-colors z-40 pointer-events-auto"
       >
         <ChevronLeft size={32} className="sm:w-12 sm:h-12" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold transition-colors z-10"
+        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold transition-colors z-40 pointer-events-auto"
       >
         <ChevronRight size={32} className="sm:w-12 sm:h-12" />
       </button>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-40 pointer-events-auto">
         {slides.map((_, index) => (
           <button
             key={index}
