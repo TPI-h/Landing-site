@@ -67,21 +67,15 @@ const AboutSection = ({ hotel }: AboutSectionProps) => {
             <div>
               <h3 className="text-2xl font-bold text-navy mb-4">Our Heritage</h3>
               <p className="text-muted-foreground mb-6">
-                For nearly three decades, we have been dedicated to providing exceptional accommodations and
-                personalized service to travelers from around the world. Our hotel combines traditional Tamil
-                hospitality with modern luxury amenities.
-              </p>
-              <p className="text-muted-foreground mb-6">
-                Located in the heart of Villupuram, we serve as your perfect base for exploring the rich
-                cultural heritage of Tamil Nadu, from ancient temples to pristine beaches.
+                Thendral Park Inn offers neat, comfortable rooms where simplicity meets thoughtful convenience. Located in the heart of Villupuram near the railway station and bus stand, our hotel provides a calm, homely atmosphere with friendly service and essential comforts. Ideal for both leisure and corporate guests, we ensure every stay is welcoming, practical, and relaxing—so you always feel at home.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gold">29+</div>
+                  <div className="text-3xl font-bold text-gold">3+</div>
                   <div className="text-sm text-muted-foreground">Years of Service</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gold">50k+</div>
+                  <div className="text-3xl font-bold text-gold">10k+</div>
                   <div className="text-sm text-muted-foreground">Happy Guests</div>
                 </div>
               </div>

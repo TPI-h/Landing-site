@@ -60,7 +60,7 @@ const HeroCarousel = () => {
       {
         image: placeholderImages.deluxeRoom,
         title: "Elegant Accommodations",
-        subtitle: "Experience Premium Comfort in Our Luxurious Rooms",
+        subtitle: "Experience Premium Comfort in the town. ",
       },
       {
         image: placeholderImages.hotelLobby,

@@ -19,7 +19,7 @@ const LocationSection = ({ hotel }: LocationSectionProps) => {
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-navy mb-6">Our Location</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Conveniently located in Bangalore
+            Conveniently located in Villupuram
           </p>
         </div>
 

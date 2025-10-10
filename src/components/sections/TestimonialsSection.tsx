@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -16,6 +17,38 @@ interface TestimonialsSectionProps {
 }
 
 const TestimonialsSection = ({ testimonials, testimonialsLoading }: TestimonialsSectionProps) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const itemsPerPage = 3; // Show 3 testimonials at a time
+
+  // Calculate total pages for carousel
+  const totalPages = Math.ceil((testimonials?.length || 0) / itemsPerPage);
+
+  // Auto-rotate carousel every 5 seconds
+  useEffect(() => {
+    if (!testimonials || testimonials.length <= itemsPerPage) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalPages);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [testimonials, totalPages, itemsPerPage]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalPages);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  // Get current testimonials to display
+  const getCurrentTestimonials = () => {
+    if (!testimonials) return [];
+    const startIndex = currentSlide * itemsPerPage;
+    return testimonials.slice(startIndex, startIndex + itemsPerPage);
+  };
+
   // Helper function to convert Google Drive URLs to direct image URLs
   const getDirectImageUrl = (url: string): string | null => {
     console.log('🔍 Processing image URL:', url);
@@ -109,63 +142,105 @@ const TestimonialsSection = ({ testimonials, testimonialsLoading }: Testimonials
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {testimonialsLoading ? (
-            <div className="col-span-3 text-center py-8">Loading testimonials...</div>
-          ) : (
-            (testimonials ?? []).slice(0, 3).map((testimonial) => (
-              <Card key={testimonial.id} className="p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 relative bg-gradient-to-br from-white via-cream/10 to-white transform hover:-translate-y-1 hover:scale-[1.02]">
-                {/* Image positioned in middle-right */}
-                {(() => {
-                  const imageUrl = getDirectImageUrl(testimonial.image_url || '');
-                  console.log(`Rendering testimonial ${testimonial.id}:`, {
-                    guest_name: testimonial.guest_name,
-                    original_url: testimonial.image_url,
-                    processed_url: imageUrl,
-                    will_render_image: !!imageUrl
-                  });
+        <div className="relative">
+          {/* Carousel Container */}
+          <div className="overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out">
+              {testimonialsLoading ? (
+                <div className="col-span-3 text-center py-8">Loading testimonials...</div>
+              ) : (
+                getCurrentTestimonials().map((testimonial) => (
+                  <Card key={testimonial.id} className="p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 relative bg-gradient-to-br from-white via-cream/10 to-white transform hover:-translate-y-1 hover:scale-[1.02]">
+                    {/* Image positioned in middle-right */}
+                    {(() => {
+                      const imageUrl = getDirectImageUrl(testimonial.image_url || '');
+                      console.log(`Rendering testimonial ${testimonial.id}:`, {
+                        guest_name: testimonial.guest_name,
+                        original_url: testimonial.image_url,
+                        processed_url: imageUrl,
+                        will_render_image: !!imageUrl
+                      });
 
-                  if (!imageUrl) {
-                    console.log(`No image will be rendered for ${testimonial.guest_name} - URL processing failed or empty`);
-                    return null;
-                  }
+                      if (!imageUrl) {
+                        console.log(`No image will be rendered for ${testimonial.guest_name} - URL processing failed or empty`);
+                        return null;
+                      }
 
-                  return (
-                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2 w-20 h-20 rounded-full overflow-hidden border-3 border-gold/30 shadow-lg">
-                      <img
-                        src={imageUrl}
-                        alt={testimonial.guest_name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          console.error(`❌ Failed to load testimonial image for ${testimonial.guest_name}:`, {
-                            original_url: testimonial.image_url,
-                            processed_url: imageUrl,
-                            error: e
-                          });
-                          // Hide image if it fails to load
-                          (e.target as HTMLImageElement).parentElement!.style.display = 'none';
-                        }}
-                        onLoad={() => {
-                          console.log(`✅ Successfully loaded testimonial image for ${testimonial.guest_name}:`, imageUrl);
-                        }}
-                      />
+                      return (
+                        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 w-20 h-20 rounded-full overflow-hidden border-3 border-gold/30 shadow-lg">
+                          <img
+                            src={imageUrl}
+                            alt={testimonial.guest_name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              console.error(`❌ Failed to load testimonial image for ${testimonial.guest_name}:`, {
+                                original_url: testimonial.image_url,
+                                processed_url: imageUrl,
+                                error: e
+                              });
+                              // Hide image if it fails to load
+                              (e.target as HTMLImageElement).parentElement!.style.display = 'none';
+                            }}
+                            onLoad={() => {
+                              console.log(`✅ Successfully loaded testimonial image for ${testimonial.guest_name}:`, imageUrl);
+                            }}
+                          />
+                        </div>
+                      );
+                    })()}
+
+                    <div className="flex items-center mb-4">
+                      {[...Array(testimonial.rating || 5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 text-gold fill-current" />
+                      ))}
                     </div>
-                  );
-                })()}
+                    <Quote className="text-gold mb-4" size={32} />
+                    <p className="text-muted-foreground mb-4 italic pr-24">"{testimonial.review_text}"</p>
+                    <div>
+                      <p className="font-bold text-navy">{testimonial.guest_name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.guest_location}</p>
+                    </div>
+                  </Card>
+                ))
+              )}
+            </div>
+          </div>
 
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating || 5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-gold fill-current" />
-                  ))}
-                </div>
-                <Quote className="text-gold mb-4" size={32} />
-                <p className="text-muted-foreground mb-4 italic pr-24">"{testimonial.review_text}"</p>
-                <div>
-                  <p className="font-bold text-navy">{testimonial.guest_name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.guest_location}</p>
-                </div>
-              </Card>
-            ))
+          {/* Navigation Controls - Only show if there are more testimonials than items per page */}
+          {testimonials && testimonials.length > itemsPerPage && (
+            <>
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white hover:bg-gray-50 text-navy p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+                aria-label="Previous testimonials"
+              >
+                <ChevronLeft size={24} />
+              </button>
+
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white hover:bg-gray-50 text-navy p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+                aria-label="Next testimonials"
+              >
+                <ChevronRight size={24} />
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center mt-8 space-x-2">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
+                        ? 'bg-gold scale-125'
+                        : 'bg-gray-300 hover:bg-gray-400'
+                      }`}
+                    aria-label={`Go to testimonials page ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

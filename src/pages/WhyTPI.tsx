@@ -110,7 +110,7 @@ const WhyTPI = () => {
         },
         {
             title: "Great Location",
-            description: "Conveniently located in Bangalore with easy access to key areas and transportation.",
+            description: "Conveniently located in Villupuram with easy access to key areas and transportation.",
             icon: <MapPin className="w-10 h-10 text-navy" />
         },
         {

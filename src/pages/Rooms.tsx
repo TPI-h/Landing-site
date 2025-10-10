@@ -21,6 +21,7 @@ import {
 import { iconMap } from "@/utils/iconMapping";
 import { motion } from "framer-motion";
 import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, staggerItem, scaleIn, viewportOptions } from "@/utils/animations";
+import Amenities from "@/components/sections/AmenitiesSection";
 
 interface Room {
     id: string;
@@ -207,47 +208,7 @@ const Rooms = () => {
             </section>
 
             {/* Hotel Amenities Section */}
-            <section className="py-20 bg-gradient-to-l from-cream/50 via-white to-cream/50">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold text-navy mb-6">
-                            Hotel Amenities
-                        </h2>
-                        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                            Enjoy these facilities and services during your stay.
-                        </p>
-                    </div>
-
-                    {amenitiesLoading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {[1, 2, 3, 4].map((i) => (
-                                <Card key={i} className="p-6 animate-pulse bg-white/80">
-                                    <div className="h-12 w-12 bg-gray-200 rounded mx-auto mb-4"></div>
-                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                                    <div className="h-3 bg-gray-200 rounded"></div>
-                                </Card>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {amenities?.slice(0, 8).map((amenity, index) => {
-                                const normalizedName = amenity.name.toLowerCase().trim();
-                                const IconComponent = iconMap[normalizedName] || Star;
-                                const isEven = index % 2 === 0;
-
-                                return (
-                                    <Card key={amenity.id} className="p-6 text-center shadow-hover hover:shadow-xl transition-all duration-300 bg-white/80">
-                                        <IconComponent className={`w-12 h-12 mx-auto mb-4 ${isEven ? 'text-gold' : 'text-navy'}`} />
-                                        <h4 className="font-semibold text-navy mb-2">{amenity.name}</h4>
-                                        <p className="text-sm text-muted-foreground">{amenity.description}</p>
-                                    </Card>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            </section>
-
+            <Amenities amenities={amenities || []} isLoading={amenitiesLoading} />
             {/* Call to Action */}
             <section className="py-20 bg-gradient-to-r from-navy via-navy-light to-navy relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/20 via-transparent to-transparent"></div>

@@ -120,8 +120,8 @@ const Contact = () => {
                       <div>
                         <h3 className="font-semibold text-foreground">Reception Hours</h3>
                         <p className="text-muted-foreground">24/7 Reception & Concierge</p>
-                        <p className="text-muted-foreground">Check-in: 2:00 PM</p>
-                        <p className="text-muted-foreground">Check-out: 11:00 AM</p>
+                        <p className="text-muted-foreground">Check-in: 1:00 PM</p>
+                        <p className="text-muted-foreground">Check-out: 12:00 PM</p>
                       </div>
                     </div>
                   </div>

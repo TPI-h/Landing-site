@@ -1,5 +1,27 @@
 import { Card } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import {
+  CheckCircle,
+  Wifi,
+  Waves,
+  UtensilsCrossed,
+  Dumbbell,
+  Wind,
+  Car,
+  Shirt,
+  Users,
+  Star,
+  Building,
+  Tv,
+  Clock,
+  AirVent,
+  Snowflake,
+  Flower2,
+  Bath,
+  Bed,
+  Shield,
+  Zap,
+  MapPin
+} from "lucide-react";
 import { iconMap } from "@/utils/iconMapping";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, floatingCard, waveContainer, waveItem, viewportOptions } from "@/utils/animations";
@@ -9,6 +31,7 @@ interface Amenity {
   name: string;
   description?: string;
   icon?: string;
+  category?: string;
 }
 
 interface AmenitiesSectionProps {
@@ -18,10 +41,84 @@ interface AmenitiesSectionProps {
 
 const AmenitiesSection = ({ amenities, amenitiesLoading }: AmenitiesSectionProps) => {
   const getAmenityIcon = (amenity: Amenity) => {
-    // Only use name-based lookup (ignore database icon field)
-    const normalizedName = amenity.name.toLowerCase().trim();
-    const IconComponent = iconMap[normalizedName];
-    return IconComponent || CheckCircle;
+    // Hardcoded mapping based on exact amenity names from the image
+    const hardcodedAmenityIcons: Record<string, any> = {
+      // Exact matches for amenity names visible in the screenshot
+      '24-Hour Front Desk & Room Service': Clock,
+      'AC': Snowflake,
+      'Air Conditioning': Snowflake,
+      'Attached Private Bathrooms': Bath,
+      'Central Location': MapPin,
+      'Essential amenities': Star,
+      'Flat-Screen TV': Tv,
+      'Hot Water': Waves, // Using waves for hot water
+      'Lift / Elevator Access': Building,
+      'Parking': Car,
+      'Power Back-up': Zap, // Lightning bolt for power backup
+      'Secure & Safe Environment': Shield,
+      'Well-Furnished AC Rooms': Bed,
+      'Wi-Fi': Wifi,
+
+      // Additional common variations
+      'WiFi': Wifi,
+      'Free WiFi': Wifi,
+      'Free Wi-Fi': Wifi,
+      'Swimming Pool': Waves,
+      'Restaurant': UtensilsCrossed,
+      'Gym': Dumbbell,
+      'Fitness': Dumbbell,
+      'Room Service': Star,
+      'Concierge': Users,
+      'Business Center': Building,
+      'Conference Hall': Users,
+      'Laundry': Shirt,
+      'Spa': Flower2,
+    };
+
+    // First try exact name match (case-sensitive)
+    if (hardcodedAmenityIcons[amenity.name]) {
+      return hardcodedAmenityIcons[amenity.name];
+    }
+
+    // Try case-insensitive name match
+    const exactNameLower = amenity.name.toLowerCase();
+    for (const [key, icon] of Object.entries(hardcodedAmenityIcons)) {
+      if (key.toLowerCase() === exactNameLower) {
+        return icon;
+      }
+    }
+
+    // Try database icon field if it exists
+    if (amenity.icon) {
+      const dbIconMapping: Record<string, any> = {
+        'Wifi': Wifi,
+        'Waves': Waves,
+        'UtensilsCrossed': UtensilsCrossed,
+        'Dumbbell': Dumbbell,
+        'Wind': Snowflake, // Wind for AC
+        'Car': Car,
+        'Shirt': Shirt,
+        'Users': Users,
+        'Building': Building,
+        'Star': Star,
+        'Room': Star,
+        'AirVent': AirVent,
+        'Snowflake': Snowflake,
+        'Tv': Tv,
+        'Clock': Clock,
+        'Flower2': Flower2,
+        'Bath': Bath,
+        'Bed': Bed,
+        'Shield': Shield,
+      };
+
+      if (dbIconMapping[amenity.icon]) {
+        return dbIconMapping[amenity.icon];
+      }
+    }
+
+    // Final fallback
+    return CheckCircle;
   };
 
   return (
