@@ -114,7 +114,7 @@ const BookNow = () => {
                     <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center">
                       <Mail className="text-white" size={20} />
                     </div>
-                    <span className="text-navy font-semibold text-lg">+91 98765 43210</span>
+                    <span className="text-navy font-semibold text-lg">+91 8248043002</span>
                   </div>
                 </div>
               </div>
