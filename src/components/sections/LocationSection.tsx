@@ -40,10 +40,10 @@ const LocationSection = ({ hotel }: LocationSectionProps) => {
               <div className="bg-muted p-4 rounded-lg">
                 <h4 className="font-semibold text-navy mb-2">Transportation</h4>
                 <ul className="text-muted-foreground space-y-1 text-sm">
-                  <li>• Bangalore City Railway Station: 3 km</li>
-                  <li>• Kempegowda International Airport: 35 km</li>
-                  <li>• Electronic City: 12 km</li>
-                  <li>• Majestic Bus Stand: 4 km</li>
+                  <li>• Villupuram Railway Station: 2 km</li>
+                  <li>• Chennai International Airport: 160 km</li>
+                  <li>• Pondicherry: 35 km</li>
+                  <li>• Villupuram Bus Stand: 1.5 km</li>
                 </ul>
               </div>
 
