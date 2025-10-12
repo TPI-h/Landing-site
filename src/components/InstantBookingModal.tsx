@@ -12,22 +12,46 @@ interface InstantBookingModalProps {
     roomType?: string;
 }
 
+// Helper function to format dates as YYYY-MM-DD
+const getFormattedDate = (date: Date): string => {
+    return date.toISOString().split('T')[0];
+};
+
 export const InstantBookingModal = ({ children, roomType }: InstantBookingModalProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    // --- CHANGED: Initialize state with today's and tomorrow's dates ---
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
     const [formData, setFormData] = useState({
-        fromdate: '',
-        todate: '',
+        fromdate: getFormattedDate(today),
+        todate: getFormattedDate(tomorrow),
         noofrooms: 1 as number | string
     });
 
-    const handleInputChange = (field: string, value: string | number) => {
-        setFormData(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
+    const handleInputChange = (field: 'fromdate' | 'todate' | 'noofrooms', value: string | number) => {
+        setFormData(prev => {
+            const newFormData = { ...prev, [field]: value };
 
+            // --- ADDED: Auto-update checkout date if check-in date changes ---
+            // This ensures the checkout date is always after the check-in date.
+            if (field === 'fromdate') {
+                const checkInDate = new Date(value as string);
+                const checkOutDate = new Date(newFormData.todate);
+
+                if (checkInDate >= checkOutDate) {
+                    const newCheckOutDate = new Date(checkInDate);
+                    newCheckOutDate.setDate(checkInDate.getDate() + 1);
+                    newFormData.todate = getFormattedDate(newCheckOutDate);
+                }
+            }
+            return newFormData;
+        });
+    };
+    
     const handleBooking = async () => {
         try {
             // Validate inputs
@@ -76,10 +100,13 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
                     duration: 4000
                 });
 
-                // Reset form
+                // Reset form to default (today and tomorrow)
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(today.getDate() + 1);
                 setFormData({
-                    fromdate: '',
-                    todate: '',
+                    fromdate: getFormattedDate(today),
+                    todate: getFormattedDate(tomorrow),
                     noofrooms: 1
                 });
             } else {
@@ -95,15 +122,16 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
         }
     };
 
-    // Get tomorrow's date as minimum check-in date
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const minDate = tomorrow.toISOString().split('T')[0];
+    // --- CHANGED: Minimum date logic ---
+    // Minimum check-in date is today
+    const minCheckInDate = getFormattedDate(new Date());
 
-    // Get minimum check-out date (day after check-in)
-    const minCheckOut = formData.fromdate
-        ? new Date(new Date(formData.fromdate).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-        : minDate;
+    // Minimum check-out date is the day after the selected check-in date
+    const fromDateObj = new Date(formData.fromdate);
+    const nextDayFromCheckIn = new Date(fromDateObj);
+    nextDayFromCheckIn.setDate(fromDateObj.getDate() + 1);
+    const minCheckOutDate = getFormattedDate(nextDayFromCheckIn);
+
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -129,7 +157,7 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
                         <Input
                             id="checkin"
                             type="date"
-                            min={minDate}
+                            min={minCheckInDate} // Use new variable
                             value={formData.fromdate}
                             onChange={(e) => handleInputChange('fromdate', e.target.value)}
                             className="w-full"
@@ -142,7 +170,7 @@ export const InstantBookingModal = ({ children, roomType }: InstantBookingModalP
                         <Input
                             id="checkout"
                             type="date"
-                            min={minCheckOut}
+                            min={minCheckOutDate} // Use new variable
                             value={formData.todate}
                             onChange={(e) => handleInputChange('todate', e.target.value)}
                             className="w-full"
