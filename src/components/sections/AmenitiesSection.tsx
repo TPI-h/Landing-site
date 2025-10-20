@@ -41,23 +41,24 @@ interface AmenitiesSectionProps {
 
 const AmenitiesSection = ({ amenities, amenitiesLoading }: AmenitiesSectionProps) => {
   const getAmenityIcon = (amenity: Amenity) => {
-    // Hardcoded mapping based on exact amenity names from the image
+
+    // Hardcoded mapping based on exact amenity names from the image/screenshots
     const hardcodedAmenityIcons: Record<string, any> = {
-      // Exact matches for amenity names visible in the screenshot
       '24-Hour Front Desk & Room Service': Clock,
-      'AC': Snowflake,
+      '24/7 Check-In Available': CheckCircle,
+      '24/7 Electricity Power Back-up': Zap,
+      '24/7 Hot Water Facility': Waves,
       'Air Conditioning': Snowflake,
       'Attached Private Bathrooms': Bath,
       'Central Location': MapPin,
-      'Essential amenities': Star,
-      'Flat-Screen TV': Tv,
-      'Hot Water': Waves, // Using waves for hot water
+      'Flat-Screen LED TV': Tv,
+      'Fresh Towels and Essential Toiletries': Shirt,
       'Lift / Elevator Access': Building,
-      'Parking': Car,
-      'Power Back-up': Zap, // Lightning bolt for power backup
+      'Parking Facility': Car,
+      'Quick Billing & Smooth Checkout': Users,
       'Secure & Safe Environment': Shield,
-      'Well-Furnished AC Rooms': Bed,
-      'Wi-Fi': Wifi,
+      'Well-Furnished & Comfort AC Rooms': Bed,
+      'Wi-Fi throughout the property': Wifi,
 
       // Additional common variations
       'WiFi': Wifi,
@@ -118,7 +119,7 @@ const AmenitiesSection = ({ amenities, amenitiesLoading }: AmenitiesSectionProps
     }
 
     // Final fallback
-    return CheckCircle;
+    return Star; // Use a star as a generic fallback instead of a tick
   };
 
   return (
