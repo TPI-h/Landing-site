@@ -210,10 +210,9 @@ const Contact = () => {
                           <SelectValue placeholder="Select room type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="standard">Standard Room</SelectItem>
-                          <SelectItem value="deluxe">Deluxe Room</SelectItem>
-                          <SelectItem value="suite">Premium Suite</SelectItem>
-                          <SelectItem value="family">Family Room</SelectItem>
+                          <SelectItem value="standard">Executive</SelectItem>
+                          <SelectItem value="deluxe">Mini Suite</SelectItem>
+                          <SelectItem value="suite">Suite</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
