@@ -105,14 +105,14 @@ const BookNow = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
                     <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
-                      <Phone className="text-white" size={20} />
+                      <Mail className="text-white" size={20} />
                     </div>
                     <span className="text-navy font-semibold text-lg">thendralparkinn@gmail.com</span>
                   </div>
 
                   <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
                     <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center">
-                      <Mail className="text-white" size={20} />
+                      <Phone className="text-white" size={20} />
                     </div>
                     <span className="text-navy font-semibold text-lg">+91 8248043002</span>
                   </div>
