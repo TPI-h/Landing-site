@@ -88,7 +88,7 @@ const Footer = ({ hotel }: FooterProps) => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            © 2024 Thendral Park Inn. All rights reserved. | Privacy Policy | Terms of Service
+            © 2025 Thendral Park Inn. All rights reserved.
           </p>
         </div>
       </div>
