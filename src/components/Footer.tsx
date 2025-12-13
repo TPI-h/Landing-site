@@ -86,14 +86,37 @@ const Footer = ({ hotel }: FooterProps) => {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-300">
-            © 2025 Thendral Park Inn. All rights reserved.
-          </p>
-        </div>
+<div className="border-t border-gray-700 mt-8 pt-8 text-center">
+  <div className="flex justify-center gap-6 text-sm text-gray-400 mb-3">
+    <a
+      href="/privacy-policy"
+      className="hover:text-white transition"
+    >
+      Privacy Policy
+    </a>
+    <a
+      href="/refund-policy"
+      className="hover:text-white transition"
+    >
+      Refund & Cancellation
+    </a>
+    <a
+      href="/terms"
+      className="hover:text-white transition"
+    >
+      Terms & Conditions
+    </a>
+  </div>
+
+  <p className="text-gray-300">
+    © 2025 Thendral Park Inn. All rights reserved.
+  </p>
+</div>
+
       </div>
     </footer>
   );
 };
+
 
 export default Footer;
