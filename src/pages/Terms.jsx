@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Terms = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
@@ -6,6 +8,14 @@ const Terms = () => {
         <h1 className="text-3xl font-bold text-center mb-8">
           Terms & Conditions
         </h1>
+        <div className="flex justify-center mb-6">
+          <Link
+            to="/"
+            className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+            ← Back to Home
+          </Link>
+        </div>
+
 
         {/* Restrictions */}
         <div className="border border-gray-300 rounded-lg p-6 mb-6">
