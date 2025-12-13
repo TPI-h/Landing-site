@@ -11,10 +11,12 @@ const Terms = () => {
         <div className="flex justify-center mb-6">
           <Link
             to="/"
-            className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+            className="px-4 py-2 border border-gray-400 rounded-md text-sm
+                       hover:bg-gray-100 transition">
             ← Back to Home
           </Link>
         </div>
+
 
 
         {/* Restrictions */}
