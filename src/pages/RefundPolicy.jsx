@@ -1,4 +1,5 @@
-import {link} from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const RefundPolicy = () => {
   return (
@@ -11,8 +12,7 @@ const RefundPolicy = () => {
         <div className="flex justify-center mb-6">
           <Link
             to="/"
-            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-          >
+            className="text-sm text-blue-600 hover:underline flex items-center gap-1">
             ← Back to Home
           </Link>
         </div>
