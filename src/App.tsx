@@ -7,7 +7,6 @@ import ScrollToTop from './components/scrollToTop';
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import BookNow from "./pages/BookNow";
 import WhyTPI from "./pages/WhyTPI";
 import Rooms from "./pages/Rooms";
 import NotFound from "./pages/NotFound";
@@ -30,7 +29,6 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/why-tpi" element={<WhyTPI />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/book-now" element={<BookNow />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -43,4 +41,5 @@ const App = () => (
 );
 
 export default App;
+
 
