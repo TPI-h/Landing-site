@@ -52,6 +52,8 @@ export class SKYHMSBookingService {
         form.action = SKYHMS_CONFIG.baseUrl;
         form.target = '_blank'; // Open in new tab
         form.style.display = 'none';
+        // Ensure referer is sent to avoid "Incorrect Domain" error
+        form.setAttribute('referrerpolicy', 'unsafe-url');
 
         // Add the apikey field with JSON payload
         const apikeyField = document.createElement('input');
