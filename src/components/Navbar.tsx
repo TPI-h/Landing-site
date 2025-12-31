@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import logo from "@/assert/logo.png";
 import pillayar from "@/assert/pillayar.png";
+import { InstantBookingModal } from "./InstantBookingModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -98,14 +99,13 @@ const Navbar = () => {
             ))}
 
             {/* Book Now Button */}
-            <Link
-              to="/book-now"
-              className="relative px-6 py-3 font-semibold text-white rounded-xl overflow-hidden group transition-all duration-300 hover:scale-105 hover:shadow-xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-gold via-amber-500 to-gold group-hover:from-amber-600 group-hover:via-gold group-hover:to-amber-600 transition-all duration-300"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-              <span className="relative z-10">Book Now</span>
-            </Link>
+            <InstantBookingModal>
+              <button className="relative px-6 py-3 font-semibold text-white rounded-xl overflow-hidden group transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-gold via-amber-500 to-gold group-hover:from-amber-600 group-hover:via-gold group-hover:to-amber-600 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <span className="relative z-10">Book Now</span>
+              </button>
+            </InstantBookingModal>
           </div>
 
           {/* Mobile Menu Button */}
@@ -158,13 +158,14 @@ const Navbar = () => {
             ))}
 
             {/* Mobile Book Now Button */}
-            <Link
-              to="/book-now"
-              onClick={() => setIsOpen(false)}
-              className="block w-full mt-4 px-6 py-3 font-semibold text-white text-center rounded-lg bg-gradient-to-r from-gold via-amber-500 to-gold hover:from-amber-600 hover:via-gold hover:to-amber-600 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              📞 Book Now
-            </Link>
+            <InstantBookingModal>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="block w-full mt-4 px-6 py-3 font-semibold text-white text-center rounded-lg bg-gradient-to-r from-gold via-amber-500 to-gold hover:from-amber-600 hover:via-gold hover:to-amber-600 transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                📞 Book Now
+              </button>
+            </InstantBookingModal>
           </div>
         </div>
       </div>
